@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->string('student_id')->unique();
+            $table->string('student_id')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedTinyInteger('type');
+            $table->unsignedTinyInteger('type')->default(2);
             $table->rememberToken();
             $table->timestamps();
         });

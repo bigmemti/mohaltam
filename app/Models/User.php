@@ -18,7 +18,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'student_id',
         'email',
         'password',
     ];
@@ -41,4 +43,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    const TEACHER_TYPE = 1;
+    const STUDENT_TYPE = 2;
+
+    public function hasLesson()
+    {
+        return Participation::where('user_id', $this->id)->count() > 0 ? true : false;
+    }
 }

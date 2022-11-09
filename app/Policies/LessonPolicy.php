@@ -2,13 +2,22 @@
 
 namespace App\Policies;
 
-use App\Models\Lesson;
 use App\Models\User;
+use App\Models\Lesson;
+use App\Models\Participation;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class LessonPolicy
 {
     use HandlesAuthorization;
+
+
+    public function before(User $user)
+    {
+        if($user->type == User::TEACHER_TYPE){
+            return true;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -18,7 +27,7 @@ class LessonPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -30,7 +39,7 @@ class LessonPolicy
      */
     public function view(User $user, Lesson $lesson)
     {
-        //
+        return Participation::where(['user_id' => $user->id, 'lesson_id' => $lesson->id])->count() == 1 ;
     }
 
     /**
@@ -41,7 +50,7 @@ class LessonPolicy
      */
     public function create(User $user)
     {
-        //
+        return false;
     }
 
     /**
@@ -53,7 +62,7 @@ class LessonPolicy
      */
     public function update(User $user, Lesson $lesson)
     {
-        //
+        return false;
     }
 
     /**
@@ -65,7 +74,7 @@ class LessonPolicy
      */
     public function delete(User $user, Lesson $lesson)
     {
-        //
+        return false;
     }
 
     /**
@@ -77,7 +86,7 @@ class LessonPolicy
      */
     public function restore(User $user, Lesson $lesson)
     {
-        //
+        return false;
     }
 
     /**
@@ -89,6 +98,6 @@ class LessonPolicy
      */
     public function forceDelete(User $user, Lesson $lesson)
     {
-        //
+        return false;
     }
 }

@@ -31,7 +31,10 @@ const showingNavigationDropdown = ref(false);
                                     Dashboard
                                 </NavLink>
                                 <NavLink v-if="$page.props.auth.user.type == 1" :href="route('user.index')" :active="route().current('user.index')">
-                                Users
+                                    Users
+                                </NavLink>
+                                <NavLink v-if="$page.props.auth.user.type == 1" :href="route('lesson.index')" :active="route().current('lesson.index')">
+                                    Lessons
                                 </NavLink>
                             </div>
                         </div>

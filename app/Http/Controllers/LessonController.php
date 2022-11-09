@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Lesson;
 use App\Http\Requests\StoreLessonRequest;
 use App\Http\Requests\UpdateLessonRequest;
@@ -15,7 +16,10 @@ class LessonController extends Controller
      */
     public function index()
     {
-        //
+        $this->authorize('viewAny', Lesson::class);
+        $lessons = Lesson::all();
+
+        return Inertia::render('Lesson/Index', ['lessons' => $lessons]);
     }
 
     /**
@@ -25,7 +29,9 @@ class LessonController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('create', Lesson::class);
+
+        return Inertia::render('Lesson/Create');
     }
 
     /**
@@ -36,7 +42,9 @@ class LessonController extends Controller
      */
     public function store(StoreLessonRequest $request)
     {
-        //
+        Lesson::create($request->validated());
+
+        return to_route('lesson.index');
     }
 
     /**
@@ -47,7 +55,9 @@ class LessonController extends Controller
      */
     public function show(Lesson $lesson)
     {
-        //
+        $this->authorize('view', $lesson);
+
+        return Inertia::render('Lesson/Show', ['lesson' => $lesson]);
     }
 
     /**
@@ -58,7 +68,9 @@ class LessonController extends Controller
      */
     public function edit(Lesson $lesson)
     {
-        //
+        $this->authorize('edit', $lesson);
+
+        return Inertia::render('Lesson/Edit', ['lesson' => $lesson]);
     }
 
     /**
@@ -70,7 +82,9 @@ class LessonController extends Controller
      */
     public function update(UpdateLessonRequest $request, Lesson $lesson)
     {
-        //
+        $lesson->update($request->validated());
+
+        return to_route('lesson.index');
     }
 
     /**

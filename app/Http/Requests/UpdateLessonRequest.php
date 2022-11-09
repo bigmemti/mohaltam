@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateLessonRequest extends FormRequest
@@ -13,7 +14,7 @@ class UpdateLessonRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->user()->type == User::TEACHER_TYPE;
     }
 
     /**
@@ -24,7 +25,7 @@ class UpdateLessonRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|string|unique:lessons,name,'.request()->lesson->id.',id'
         ];
     }
 }

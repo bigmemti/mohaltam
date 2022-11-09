@@ -51,4 +51,9 @@ class User extends Authenticatable
     {
         return Participation::where('user_id', $this->id)->count() > 0 ? true : false;
     }
+
+    public function lessons()
+    {
+        return $this->belongsToMany(Lesson::class, (new Participation)->getTable());
+    }
 }

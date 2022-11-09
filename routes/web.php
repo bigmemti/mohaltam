@@ -6,8 +6,8 @@ use App\Models\Lesson;
 use Illuminate\Http\Request;
 use App\Models\Participation;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LessonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,28 +20,34 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::redirect('/', 'dashboard');
-
-Route::get('/dashboard', function () {
-    $classes = [];
-    if(!auth()->user()->hasLesson() && auth()->user()->type == User::STUDENT_TYPE){
-        $classes = Lesson::all();
-    }
-    return Inertia::render('Dashboard', compact(['classes']));
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 require __DIR__.'/auth.php';
 
-Route::post('user/{user}/lesson', function(Request $request, User $user) {
+Route::middleware(['auth', 'verified'])->group(function () {
 
-    $request->validate([
-        'lesson_id' => 'exists:lessons,id'
-    ]);
+    Route::redirect('/', 'dashboard');
 
-    Participation::create([
-        'user_id' => $user->id,
-        'lesson_id' => $request->lesson_id
-    ]);
-})->middleware(['auth', 'verified'])->name('user.lesson.store');
+    Route::get('/dashboard', function () {
+        $classes = [];
+        $user = auth()->user();
+        if(!$user->hasLesson() && $user->type == User::STUDENT_TYPE){
+            $classes = Lesson::all();
+        }
+        return Inertia::render('Dashboard', compact(['classes']));
+    })->name('dashboard');
 
-Route::resource('user', UserController::class)->middleware(['auth', 'verified']);
+    Route::post('user/{user}/lesson', function(Request $request, User $user) {
+
+        $request->validate([
+            'lesson_id' => 'exists:lessons,id'
+        ]);
+
+        Participation::create([
+            'user_id' => $user->id,
+            'lesson_id' => $request->lesson_id
+        ]);
+    })->name('user.lesson.store');
+
+    Route::resource('user', UserController::class);
+
+    Route::resource('lesson', LessonController::class);
+});

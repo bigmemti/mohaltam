@@ -57,7 +57,10 @@ class LessonController extends Controller
     {
         $this->authorize('view', $lesson);
 
-        return Inertia::render('Lesson/Show', ['lesson' => $lesson]);
+        $users = $lesson->users()->where('type',2)->orderBy('student_id')->get();
+
+        
+        return Inertia::render('Lesson/Show', ['lesson' => $lesson, 'users' => $users]);
     }
 
     /**

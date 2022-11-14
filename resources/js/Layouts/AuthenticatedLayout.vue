@@ -33,7 +33,7 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink v-if="$page.props.auth.user.type == 1" :href="route('user.index')" :active="route().current('user.index')">
                                     Users
                                 </NavLink>
-                                <NavLink v-if="$page.props.auth.user.type == 1" :href="route('lesson.index')" :active="route().current('lesson.index')">
+                                <NavLink  :href="route('lesson.index')" :active="route().current('lesson.index')">
                                     Lessons
                                 </NavLink>
                             </div>
@@ -100,6 +100,9 @@ const showingNavigationDropdown = ref(false);
                             </ResponsiveNavLink>
                             <ResponsiveNavLink class="text-left" v-if="$page.props.auth.user.type == 1" :href="route('user.index')" method="get" as="button" :active="route().current('user.index')">
                                 Users
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink class="text-left"  :href="route('lesson.index')" method="get" as="button" :active="route().current('lesson.index')">
+                                    Lessons
                             </ResponsiveNavLink>
                             <ResponsiveNavLink class="text-left" :href="route('logout')" method="post" as="button">
                                 Log Out

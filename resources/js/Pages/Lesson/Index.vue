@@ -16,7 +16,7 @@ defineProps(['lessons']);
             </h2>
         </template>
 
-        <div class="pt-12 pb-2">
+        <div class="pt-12 pb-2" v-if="$page.props.auth.user.type == 1">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200 flex justify-end">
@@ -40,7 +40,7 @@ defineProps(['lessons']);
                                     <td class="text-center">{{lesson.name}}</td>
                                     <td class="text-center">
                                         <Link class="bg-cyan-500 p-3 px-4 inline-block mx-1 rounded-lg" :href="route('lesson.show', {'lesson': lesson.id})">show</Link>
-                                        <Link class="bg-yellow-500 p-3 px-4 inline-block mx-1 rounded-lg" :href="route('lesson.edit', {'lesson': lesson.id})">edit</Link>
+                                        <Link  v-if="$page.props.auth.user.type == 1" class="bg-yellow-500 p-3 px-4 inline-block mx-1 rounded-lg" :href="route('lesson.edit', {'lesson': lesson.id})">edit</Link>
                                     </td>
                                 </tr>
                             </tbody>
